@@ -1,1 +1,1 @@
-[{'long_url': 'http://google.com', 'ip': '0.0.0.0', 'short_url': '<domain>.com/google'}]
+[{'short_url': 'google', 'long_url': 'http://google.com', 'ip': '0.0.0.0'}]
