@@ -12,19 +12,29 @@
         </div>
     </div>
     <form class="form-group" id="input_form" action="create_short_url" method="post">
-        <input type="text" class="form-control input-lg" placeholder="Paste your link here" id="long_url_tb" name="long_url">
+        <input type="text" class="form-control input-lg" placeholder="Paste your link here" id="long_url_tb"
+               name="long_url" value={{ long_url }}>
         <div class="checkbox">
             <label>
-                <input type="checkbox" onclick="enable_text(this.checked)" name="custom_short_url"> I want a custom short url!
+                <input type="checkbox" onclick="enable_text(this.checked)" name="short_url_specified"
+                       id="specify_url_checkbox">
+                Let me choose a nice URL for myself!
             </label>
         </div>
         <div class="input-group">
             <div class="input-group-addon">domain.com/</div>
-            <input type="text" class="form-control input-lg" placeholder="some custom name" id="custom_short_url_tb" name="custom_short"
-                    disabled>
+            <input type="text" class="form-control input-lg" placeholder="some custom name" id="custom_short_url_tb"
+                   name="custom_short_tb" disabled value={{ short_url }}>
         </div>
+        <br>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" name="submit">Submit</button>
     </form>
-    </div>
+    {% if successful_request and returned_message != '' %}
+        <div class="alert alert-success" role="alert">Yay! Here's your link: <a href="{{'/' + short_url }}">{{ returned_message + '/' + short_url }}</a></div>
+    {% endif %}
+    {% if not successful_request %}
+        <div class="alert alert-danger" role="alert">{{ returned_message }}</div>
+    {% endif %}
 </div>
 
 <!-- BOTTOM -->
@@ -39,17 +49,10 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
-<!-- weird(?) way to highlight input form -->
-{% if input_field_state == 'has-success' %}
-    <script type = 'text/javascript'>
-        document.getElementById('input_form').className += ' has-success';
-    </script>
-{% endif %}
-{% if input_field_state == 'has-error' %}
-    <script type = 'text/javascript'>
-        document.getElementById('input_form').className += ' has-error';
-    </script>
-{% endif %}
+<!-- this is what render_template params look like
+    'home.html', long_url='wqe', specify_url=False, short_url='ew', successful_request = False,
+        returned_message=''
+-->
 
 <!-- toggle enable/disable custom_short_url_tb by checkbox -->
 <script type='text/javascript'>
@@ -59,3 +62,9 @@
         document.getElementById('custom_short_url_tb').disabled = status;
     }
 </script>
+
+{% if specify_url or short_url != '' %}
+    <script type='text/javascript'>
+        document.getElementById('specify_url_checkbox').click();
+    </script>
+{% endif %}
