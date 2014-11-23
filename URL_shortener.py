@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, json, current_app
+from flask import Flask, render_template, redirect, request, json, current_app, url_for
 from storage import get_entries, add_entry, get_answer
 import re
 import random
@@ -25,11 +25,18 @@ def go_to_path(path):
 
 @app.route("/create_short_url", methods=["POST"])
 def create_short_url():
-    long_url = request.form.getlist('long_url')[0]
+    long_url = request.form.getlist('long_url')
+    if len(long_url) != 0:
+        long_url = long_url[0]
+    else: long_url = ''
     short_specify = request.form.getlist('short_url_specified')
-    if 'on' in short_specify and valid_url(long_url):
-        short_url = request.form.getlist('short_url')[0]
-    else:
+    short_url = ''
+    if 'on' in short_specify:
+        short_url = request.form.getlist('short_url')
+        if len(short_url) != 0:
+            short_url = short_url[0]
+        else: short_url = ''
+    elif valid_url(long_url):
         short_url = ''.join(random.choice(CHARSET) for _ in range(5))
         # returns false only if no such short_url exists in storage
         while get_answer(short_url):
@@ -38,7 +45,8 @@ def create_short_url():
     redirect_to_index = redirect('/')
     response = current_app.make_response(redirect_to_index)
     cookie = {'short_url': short_url, 'long_url': long_url,
-                                        'short_specify': short_specify == 'on'}
+                                        'short_specify': 'on' in short_specify, 'HOST_URL': request.url_root}
+
     if valid_url(long_url) and not get_answer(short_url):
         cookie['status'] = 'success'
         add_entry({
@@ -54,8 +62,10 @@ def create_short_url():
     return response
 
 def valid_url(url):
-    if 'http:/' not in url:
-        url += 'http:/'
+    if url == '' or url == []:
+        return False
+    if 'http:/' not in url and 'https:/' not in url:
+        url = 'http:/' + url
     return re.match(r'^[a-zA-Z]+://', url)
 
 if __name__ == '__main__':

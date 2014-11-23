@@ -24,20 +24,23 @@
         <div class="input-group">
             <div class="input-group-addon">domain.com/</div>
             <input type="text" class="form-control input-lg" placeholder="some custom name" id="short_url_tb"
-                   name="short_url" disabled value={{ cookies.short_url }}>
+                   name="short_url" disabled
+                    {% if cookies.short_specify %}
+                        value = {{ cookies.short_url }}
+                    {% endif %}>
         </div>
         <br>
         <button type="submit" class="btn btn-primary btn-lg btn-block" name="submit">Submit</button>
     </form>
     {% if cookies.status == 'success' %}
         <div class="alert alert-success" role="alert">Yay! Here's your link:
-            <a href="{{'/' + cookies.short_url }}">{{ cookies.HOST_URL + '/' + cookies.short_url }}</a></div>
+            <a href="{{'/' + cookies.short_url }}">{{ cookies.HOST_URL + cookies.short_url }}</a></div>
     {% endif %}
     {% if cookies.status == 'already-exists' %}
         <div class="alert alert-danger" role="alert">Such short URL already exists. Please, choose another one!</div>
     {% endif %}
     {% if cookies.status == 'invalid-url' %}
-        <div class="alert alert-danger" role="alert">You pasted invalid URl. Pleas, check it once more!</div>
+        <div class="alert alert-danger" role="alert">Oh no! You pasted invalid URL!</div>
     {% endif %}
 </div>
 
