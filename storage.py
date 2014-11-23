@@ -1,5 +1,4 @@
 import os
-
 FILENAME = os.path.dirname(os.path.realpath(__file__)) + '\\storage.txt'
 
 
@@ -13,7 +12,7 @@ def update_storage_():
         print(repr(entries_), file=storage)
 
 
-# Entry = {'short_url' : '', 'long_url' : '', ip : ''}
+# Entry = {'short_url' : '', 'long_url' : '', 'ip' : ''}
 entries_ = load_entries_from_storage_()
 
 
