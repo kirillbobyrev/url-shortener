@@ -18,8 +18,13 @@ print(get_entries())
 def get_home():
     return render_template('home.html', input_field_state = 'neutral', entries = [])
 
+@app.route('/<path>')
+def go_to_path(path):
+    #TODO: check if path is valid or not and then handle it
+    return render_template('404.html')
+
 @app.route("/create_long_url", methods=["POST"])
-def new_post():
+def new_long_url():
     longURL = request.form['input']
     print(longURL)
     return redirect('/')
