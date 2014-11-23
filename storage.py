@@ -11,8 +11,6 @@ def update_storage_():
     with open(FILENAME, 'w') as storage:
         print(repr(entries_), file=storage)
 
-
-# Entry = {'short_url' : '', 'long_url' : '', 'ip' : '' }
 entries_ = load_entries_from_storage_()
 
 

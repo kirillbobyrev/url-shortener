@@ -13,58 +13,52 @@
     </div>
     <form class="form-group" id="input_form" action="create_short_url" method="post">
         <input type="text" class="form-control input-lg" placeholder="Paste your link here" id="long_url_tb"
-               name="long_url" value={{ long_url }}>
+               name="long_url" value={{ cookies.long_url }}>
         <div class="checkbox">
             <label>
                 <input type="checkbox" onclick="enable_text(this.checked)" name="short_url_specified"
-                       id="specify_url_checkbox">
+                       id="checkbox">
                 Let me choose a nice URL for myself!
             </label>
         </div>
         <div class="input-group">
             <div class="input-group-addon">domain.com/</div>
-            <input type="text" class="form-control input-lg" placeholder="some custom name" id="custom_short_url_tb"
-                   name="custom_short_tb" disabled value={{ short_url }}>
+            <input type="text" class="form-control input-lg" placeholder="some custom name" id="short_url_tb"
+                   name="short_url" disabled value={{ cookies.short_url }}>
         </div>
         <br>
         <button type="submit" class="btn btn-primary btn-lg btn-block" name="submit">Submit</button>
     </form>
-    {% if successful_request and returned_message != '' %}
-        <div class="alert alert-success" role="alert">Yay! Here's your link: <a href="{{'/' + short_url }}">{{ returned_message + '/' + short_url }}</a></div>
+    {% if cookies.status == 'success' %}
+        <div class="alert alert-success" role="alert">Yay! Here's your link:
+            <a href="{{'/' + cookies.short_url }}">{{ cookies.HOST_URL + '/' + cookies.short_url }}</a></div>
     {% endif %}
-    {% if not successful_request %}
-        <div class="alert alert-danger" role="alert">{{ returned_message }}</div>
+    {% if cookies.status == 'already-exists' %}
+        <div class="alert alert-danger" role="alert">Such short URL already exists. Please, choose another one!</div>
+    {% endif %}
+    {% if cookies.status == 'invalid-url' %}
+        <div class="alert alert-danger" role="alert">You pasted invalid URl. Pleas, check it once more!</div>
     {% endif %}
 </div>
 
-<!-- BOTTOM -->
 <footer class="footer">
 <div class="container">
     <p class="text-muted">Kirill Bobyrev, 2014</p>
     </div>
 </footer>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="{{ url_for('static', filename='jquery-1.11.1.js') }}"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 
-<!-- this is what render_template params look like
-    'home.html', long_url='wqe', specify_url=False, short_url='ew', successful_request = False,
-        returned_message=''
--->
-
-<!-- toggle enable/disable custom_short_url_tb by checkbox -->
 <script type='text/javascript'>
     function enable_text(status)
     {
         status=!status;
-        document.getElementById('custom_short_url_tb').disabled = status;
+        document.getElementById('short_url_tb').disabled = status;
     }
 </script>
 
-{% if specify_url or short_url != '' %}
+{% if cookies.short_specify %}
     <script type='text/javascript'>
-        document.getElementById('specify_url_checkbox').click();
+        document.getElementById('checkbox').click();
     </script>
 {% endif %}
