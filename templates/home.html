@@ -1,0 +1,41 @@
+<link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='bootstrap/css/sticky-footer.css') }}" rel="stylesheet">
+
+<title>URL shortener</title>
+
+<div class = "container">
+    <div class="page-header">
+        <h1>URL shortener</h1>
+        <div class="lead">
+            Beautiful is better than ugly. <br>
+            Simple is better than complex.
+        </div>
+    </div>
+    <form class="form-group" id="input_form" action="create_long_url" method="post">
+        <input type="text" class="form-control input-lg" placeholder="Paste your link here" name="input">
+    </div>
+</div>
+
+<!-- BOTTOM -->
+<footer class="footer">
+<div class="container">
+    <p class="text-muted">Kirill Bobyrev, 2014</p>
+    </div>
+</footer>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="{{ url_for('static', filename='jquery-1.11.1.js') }}"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+
+<!-- weird(?) way to highlight input form -->
+{% if input_field_state == 'has-success' %}
+    <script type = 'text/javascript'>
+        document.getElementById('input_form').className += ' has-success';
+    </script>
+{% endif %}
+{% if input_field_state == 'has-error' %}
+    <script type = 'text/javascript'>
+        document.getElementById('input_form').className += ' has-error';
+    </script>
+{% endif %}
