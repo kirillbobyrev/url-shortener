@@ -35,7 +35,7 @@ def create_short_url():
         while get_answer(short_url):
             short_url = ''.join(random.choice(CHARSET) for _ in range(5))
 
-    redirect_to_index = redirect('/index')
+    redirect_to_index = redirect('/')
     response = current_app.make_response(redirect_to_index)
     cookie = {'short_url': short_url, 'long_url': long_url,
                                         'short_specify': short_specify == 'on'}
@@ -51,7 +51,7 @@ def create_short_url():
         cookie['status'] = 'invalid-url'
     response.set_cookie('cookies', json.dumps(cookie))
     print(cookie)
-    return redirect('/')
+    return response
 
 def valid_url(url):
     if 'http:/' not in url:
