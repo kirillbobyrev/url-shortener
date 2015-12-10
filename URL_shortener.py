@@ -85,4 +85,4 @@ def valid_url(url):
     return re.match(regex, url)
 
 if __name__ == '__main__':
-    app.==run()
+    app.run()
