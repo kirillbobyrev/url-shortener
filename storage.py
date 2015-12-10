@@ -1,5 +1,8 @@
 import os
-FILENAME = os.path.dirname(os.path.realpath(__file__)) + '\\storage.txt'
+
+os.system('touch storage.txt')
+
+FILENAME = os.path.dirname(os.path.realpath(__file__)) + '/storage.txt'
 
 
 def load_entries_from_storage_():
